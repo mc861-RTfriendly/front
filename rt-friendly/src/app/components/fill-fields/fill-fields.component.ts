@@ -91,6 +91,7 @@ export class FillFieldsComponent implements OnInit, OnChanges {
       extra: new FormGroup({})
     });
 
+    console.log(this.fields)
     // Setting fields
     if (this.fields) {
       this.fields.forEach( (field) => {
@@ -98,14 +99,14 @@ export class FillFieldsComponent implements OnInit, OnChanges {
         if (!field.extra) {
           (this.form.get('standard') as FormGroup).addControl(field.key, new FormControl((field.value)) );
           if (!field.notRequired) {
-            this.form.controls['standard']?.get(field.key)?.setValidators(Validators.required);
+            this.form.controls['standard'].get(field.key).setValidators(Validators.required);
           }
         // Extra fields
         } else {
           this.extraFields = true;
           (this.form.get('extra') as FormGroup).addControl(field.key, new FormControl((field.value)) );
           if (!field.notRequired) {
-            this.form.controls['extra']?.get(field.key)?.setValidators(Validators.required);
+            this.form.controls['extra'].get(field.key).setValidators(Validators.required);
           }
         }
       });

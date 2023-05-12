@@ -8,7 +8,6 @@ import { SharedModule } from '../shared.module';
 import { RequestComponent } from './request/request.component';
 
 // page components:
-//import { CreateReportComponent } from './create-report/create-report.component';
 //import { CustomReportComponent } from './custom-report/custom-report.component';
 
 
@@ -25,6 +24,7 @@ import { RequestComponent } from './request/request.component';
     SharedModule,
   ],
   exports: [
+    RequestComponent
   ],
   providers: [
     DatePipe,
