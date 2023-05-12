@@ -44,13 +44,13 @@ export class FillFieldsComponent implements OnInit, OnChanges {
   // Flag that indicates if confirm/cancel buttons should be used
   @Input() showButtons: any = true;
 
-  @Input() formGroupContent: FormGroup = null;
+  @Input() formGroupContent: any = null;
 
   // Flag that indicates if the standard margin/padding should be used
   @Input() cardMargin: any = true;
 
   // Text of submitButton
-  @Input() submitButton: string = null;
+  @Input() submitButton: any = null;
 
   // Replaces 'cancel' button with a button that clean all fields
   @Input() cleanButton = false;
