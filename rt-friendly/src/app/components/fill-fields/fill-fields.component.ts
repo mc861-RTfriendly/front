@@ -66,9 +66,9 @@ export class FillFieldsComponent implements OnInit, OnChanges {
 
   @Input() fieldParamPosition = 'top';
 
-  @Input() customHeight: string;
+  @Input() customHeight: any = null;
 
-  @Input() customGutter: string;
+  @Input() customGutter: any = null;
 
   @Input() loadingButton = false;
 
@@ -93,7 +93,6 @@ export class FillFieldsComponent implements OnInit, OnChanges {
 
     // Setting fields
     if (this.fields) {
-      this.fields = this.fields.filter(el => el.type !== ExtraType.FormId);
       this.fields.forEach( (field) => {
         // Standard fields
         if (!field.extra) {
