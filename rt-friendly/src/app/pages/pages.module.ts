@@ -1,7 +1,6 @@
 // default modules:
 import { CommonModule, DatePipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 
 // shared modules:
 import { ComponentsModule } from '../components/components.module';
@@ -26,7 +25,6 @@ import { SharedModule } from '../shared.module';
   ],
   providers: [
     DatePipe,
-    NgxSpinnerService,
   ],
   entryComponents: [
   ],

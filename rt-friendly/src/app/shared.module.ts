@@ -11,12 +11,6 @@ import { HttpClientModule } from '@angular/common/http';
 
 // material modules:
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import { MatToolbar, MatToolbarModule, MatSidenavModule, MatListModule,
-  MatTabsModule, MatNativeDateModule, MatBadge, MatBadgeModule, MatVerticalStepper, MatStepperModule,
-  MatBottomSheet, MatBottomSheetModule, MatMenuModule } from '@angular/material';
-import { MatSnackBarModule } from '@angular/material';
-import { MatDialogModule } from '@angular/material';
-import { MatIconRegistry } from '@angular/material';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,7 +31,6 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterModule } from '@angular/router';
-import { NgxSpinnerModule } from 'ngx-spinner';
 
 const SHARED_MODULES = [
   MatFormFieldModule,
@@ -47,10 +40,8 @@ const SHARED_MODULES = [
   FlexLayoutModule,
   OwlDateTimeModule,
   OwlNativeDateTimeModule,
-  MatSnackBarModule,
   MatCardModule,
   MatButtonModule,
-  MatBadgeModule,
   MatButtonToggleModule,
   MatTableModule,
   MatPaginatorModule,
@@ -62,25 +53,15 @@ const SHARED_MODULES = [
   MatGridListModule,
   MatSlideToggleModule,
   MatDividerModule,
-  MatDialogModule,
   MatTooltipModule,
   HttpClientModule,
   MatSelectModule,
-  MatToolbarModule,
-  MatSidenavModule,
-  MatListModule,
   MatExpansionModule,
-  MatListModule,
   MatRadioModule,
-  MatMenuModule,
   MatProgressSpinnerModule,
-  MatTabsModule,
   MatProgressBarModule,
   MatDatepickerModule,
-  MatNativeDateModule,
-  MatStepperModule,
   RouterModule,
-  MatBottomSheetModule,
 ];
 
 
@@ -96,8 +77,6 @@ const SHARED_MODULES = [
   ],
 })
 export class SharedModule {
-  constructor(matIconRegistry: MatIconRegistry, domSanitizer: DomSanitizer) {
-    matIconRegistry.addSvgIconSet(domSanitizer.bypassSecurityTrustResourceUrl('./assets/mdi.svg'));
-    // Or whatever path you placed mdi.svg at
+  constructor(domSanitizer: DomSanitizer) {
   }
 }

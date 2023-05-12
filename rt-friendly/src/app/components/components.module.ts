@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 // system components:
 import { SharedModule } from '../shared.module';
 
-import { MatTooltipModule } from '@angular/material';
 import { FillFieldsComponent } from './fill-fields/fill-fields.component';
 import { FormsModule } from '@angular/forms';
 
@@ -16,7 +15,6 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     SharedModule,
-    MatTooltipModule,
     FormsModule,
   ],
   exports: [
