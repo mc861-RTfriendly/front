@@ -1,0 +1,26 @@
+/* You can add global styles to this file, and also import other style files */
+
+.info-window-title{
+    font-size: 16px;
+}
+
+
+.full-width{
+  width: 100%;
+}
+
+// Can be used as matTooltipClass to allow break of lines in the tooltip
+.break-line-tooltip {
+  white-space: pre-line;
+}
+
+//fix for matPrefix position when using mat-form-field with outline appearance
+.fix-prefix.mat-form-field-appearance-outline .mat-form-field-prefix {
+  position: initial;
+  padding-right: 5px;
+}
+
+// Set's the text color of disabled dropdown's to follow same style of other disabled angular material fields
+.mat-form-field span.mat-form-field-label-wrapper mat-label {
+  color: rgba(0, 0, 0, 0.38);
+}

@@ -1,0 +1,45 @@
+.red-color {
+  color: #eb5757;
+}
+
+.button-size {
+  min-width: 120px;
+}
+
+.disabled-button {
+  background-color: #bdbdbd;
+  color: #ffffff;
+}
+
+.green-button {
+  background-color: #27ae60;
+  color: #ffffff;
+}
+
+.edit-content {
+  padding: 50px 2% 0 2%;
+}
+
+.card-box {
+  .box-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+  .action-buttons {
+    margin: 0;
+    .button-size {
+      width: 240px;
+      height: 36px;
+    }
+  }
+}
+
+.no-editing-message {
+  font-size: 20px;
+  color: #828282;
+  margin: 80px 0;
+}
+
+.loadingButton {
+  font-weight: 500;
+}
