@@ -5,6 +5,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 // shared modules:
 import { ComponentsModule } from '../components/components.module';
 import { SharedModule } from '../shared.module';
+import { RequestComponent } from './request/request.component';
 
 // page components:
 //import { CreateReportComponent } from './create-report/create-report.component';
@@ -15,6 +16,8 @@ import { SharedModule } from '../shared.module';
   declarations: [
 //    CreateReportComponent,
 //    CustomReportComponent,
+  
+    RequestComponent
   ],
   imports: [
     CommonModule,
