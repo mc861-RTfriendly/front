@@ -11,6 +11,9 @@ interface FillField {
   extra: boolean;
   show: boolean;
   notRequired?: boolean;
+  min?: number;
+  max?: number;
+  pattern?: any;
   options?: { value: any, name: string }[];
 }
 

@@ -6,8 +6,8 @@ aaaas
     </div>
 
     <form [formGroup]="form" (ngSubmit)="sendForms()">
-      <ng-container *ngIf="fields || fieldParam; else loadingColumns">
-        <mat-grid-list *ngIf="(fields && fields.length) || (fieldParam && dynamicListTemplate.length )"
+      <ng-container *ngIf="fields; else loadingColumns">
+        <mat-grid-list *ngIf="fields && fields.length"
           [cols]="numberOfColumns" [rowHeight]="customHeight ? customHeight : '100px'" [gutterSize]="customGutter ? customGutter : '15px'">
 
           <ng-container *ngIf="fields && fields.length">
