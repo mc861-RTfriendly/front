@@ -1,89 +1,85 @@
-aaaas
-<div *ngIf="visible" [ngClass]="{ 'edit-content': cardMargin }" fxLayout="column" fxLayoutAlign="space-between" fxLayoutGap="20px">
+<div [ngClass]="{ 'edit-content': cardMargin }" fxLayout="column" fxLayoutAlign="space-between" fxLayoutGap="20px">
   <div class="card-box">
     <div *ngIf="title" class="box-title">
        {{ title }}
     </div>
 
     <form [formGroup]="form" (ngSubmit)="sendForms()">
-      <ng-container *ngIf="fields; else loadingColumns">
-        <mat-grid-list *ngIf="fields && fields.length"
-          [cols]="numberOfColumns" [rowHeight]="customHeight ? customHeight : '100px'" [gutterSize]="customGutter ? customGutter : '15px'">
+      <mat-grid-list *ngIf="fields && fields.length"
+        [cols]="numberOfColumns" [rowHeight]="customHeight ? customHeight : '100px'" [gutterSize]="customGutter ? customGutter : '15px'">
 
-          <ng-container *ngIf="fields && fields.length">
-            <div *ngFor="let element of fields">
-              <mat-grid-tile *ngIf="element.show==undefined || element.show==true">
+        <ng-container *ngIf="fields && fields.length">
+          <div *ngFor="let element of fields">
+            <mat-grid-tile *ngIf="true">
 
-                <ng-container [ngSwitch]="true" [formGroupName]="element.extra ? 'extra' : 'standard'" >
-                  <!-- TEXT and TEXTAREA -->
-                  <ng-container *ngSwitchCase=" element.type === extraType.ShortText || element.type === extraType.LongText ">
-                    <mat-form-field fxFlex="100" appearance="outline" required>
-                      <mat-label> {{ element.name }}</mat-label>
-                      <input matInput [pattern]="element.pattern ? element.pattern : null"
-                      [formControlName]="element.key" (change)="fieldChangeEmitter(element)"/>
-                    </mat-form-field>
-                  </ng-container>
+              <ng-container [ngSwitch]="true" [formGroupName]="element.extra ? 'extra' : 'standard'" >
+                <!-- TEXT and TEXTAREA -->
+                <ng-container *ngSwitchCase="(element.type === extraType.ShortText) || (element.type === extraType.LongText)">
+                  <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label> {{ element.name }}</mat-label>
+                    <input matInput [formControlName]="element.key"/>
+                  </mat-form-field>
+                </ng-container>
 
-                  <!-- DATE -->
-                  <ng-container *ngSwitchCase="element.type === extraType.Date">
-                    <mat-form-field fxFlex="100" appearance="outline" [owlDateTimeTrigger]="dt">
-                      <mat-label> {{ element.name }}</mat-label>
-                      <input matInput [owlDateTime]="dt" (ngModelChange)="fieldChangeEmitter(element)" readonly [formControlName]="element.key"/>
-                      <owl-date-time pickerType="both" #dt></owl-date-time>
-                      <mat-icon matSuffix color="primary"> event_note </mat-icon>
-                    </mat-form-field>
-                  </ng-container>
+                <!-- DATE -->
+                <ng-container *ngSwitchCase="element.type === extraType.Date">
+                  <mat-form-field fxFlex="100" appearance="outline" [owlDateTimeTrigger]="dt">
+                    <mat-label> {{ element.name }}</mat-label>
+                    <ng-container *ngIf="element.range; else elseBlock">
+                      <input [selectMode]="'range'" matInput [owlDateTime]="dt" readonly [formControlName]="element.key"/>
+                    </ng-container>
 
-                  <!-- NUMBER -->
-                  <ng-container *ngSwitchCase="element.type === extraType.Number">
-                    <mat-form-field fxFlex="100" appearance="outline">
-                      <mat-label> {{ element.name }}</mat-label>
-                      <input matInput [formControlName]="element.key" (change)="fieldChangeEmitter(element)"
-                       [pattern]="element.pattern ? element.pattern : null"
-                       type="number" [min]="element.min ? element.min : null" [max]="element.max ? element.max : null"/>
-                    </mat-form-field>
-                  </ng-container>
+                    <ng-template #elseBlock>
+                      <input matInput [owlDateTime]="dt" readonly [formControlName]="element.key"/>
+                    </ng-template>
 
-
-                   <!-- TAGS AND CHOICE -->
-                  <ng-container *ngSwitchCase=" element.type === extraType.Choice || element.type === extraType.Options ">
-                    <mat-form-field fxFlex="100" appearance="outline">
-                      <mat-label> {{ element.name }}</mat-label>
-                      <mat-select  required [multiple]="element.type === extraType.Options" (selectionChange)="fieldChangeEmitter(element)"
-                                  [formControlName]="element.key">
-                        <mat-option *ngFor="let option of element.options" [value]="option">
-                          {{ (getType(option) === 'object' ? option.name : option) }}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </ng-container>
-
-                  <!-- BOOLEAN -->
-                  <ng-container *ngSwitchCase=" element.type === extraType.Boolean">
-                    <mat-form-field fxFlex="100" appearance="outline">
-                      <mat-label> {{ element.name }}</mat-label>
-                      <mat-select (selectionChange)="fieldChangeEmitter(element)" [formControlName]="element.key">
-                        <mat-option *ngFor="let option of [true, false]" [value]="option">
-                          {{ (option ? 'YES' : 'NO') }}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </ng-container>
+                    <owl-date-time pickerType="both" #dt></owl-date-time>
+                    <mat-icon matSuffix color="primary"> event_note </mat-icon>
+                  </mat-form-field>
 
                 </ng-container>
-              </mat-grid-tile>
-            </div>
-          </ng-container>
 
-        </mat-grid-list>
+                <!-- NUMBER -->
+                <ng-container *ngSwitchCase="element.type === extraType.Number">
+                  <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label> {{ element.name }}</mat-label>
+                    <input matInput [formControlName]="element.key"
+                     type="number" [min]="element.min ? element.min : null" [max]="element.max ? element.max : null"/>
+                  </mat-form-field>
+                </ng-container>
 
-      </ng-container>
 
-      <ng-template #loadingColumns>
-        <div class="no-editing-message" fxLayout="row" fxLayoutAlign="center">
-           {{ 'LOADING-FIELDS' }}
-        </div>
-      </ng-template>
+                 <!-- TAGS AND CHOICE -->
+                <ng-container *ngSwitchCase=" element.type === extraType.Choice || element.type === extraType.Options ">
+                  <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label> {{ element.name }}</mat-label>
+                    <mat-select  required [multiple]="element.type === extraType.Options"
+                                [formControlName]="element.key">
+                      <mat-option *ngFor="let option of element.options" [value]="option">
+                        {{ (getType(option) === 'object' ? option.name : option) }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </ng-container>
+
+                <!-- BOOLEAN -->
+                <ng-container *ngSwitchCase=" element.type === extraType.Boolean">
+                  <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label> {{ element.name }}</mat-label>
+                    <mat-select [formControlName]="element.key">
+                      <mat-option *ngFor="let option of [true, false]" [value]="option">
+                        {{ (option ? 'YES' : 'NO') }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </ng-container>
+
+              </ng-container>
+            </mat-grid-tile>
+          </div>
+        </ng-container>
+
+      </mat-grid-list>
 
       <ng-container *ngIf="showButtons">
         <div class="action-buttons" fxLayout="row" fxLayoutAlign="space-between">
@@ -96,7 +92,7 @@ aaaas
           <ng-template #cancelButton>
             <div class="button-size">
               <button *ngIf="!loadingFlag" class="button-size red-color" mat-stroked-button (click)="switchViewing()" type="button">
-                {{ 'CANCEL'  }}
+                {{ 'CANCELAR'  }}
              </button>
             </div>
           </ng-template>
@@ -106,7 +102,7 @@ aaaas
                      'disabled-button': !( form.valid && fields ),
                      'green-button': ( form.valid && fields )
                    }" mat-flat-button type="submit">
-          {{ (submitButton ? submitButton : 'SAVE')  }}
+          {{ (submitButton ? submitButton : 'SALVAR')  }}
         </button>
 
         <ng-template #loadingSubmitButton>
@@ -117,7 +113,7 @@ aaaas
                             }" mat-flat-button type="submit"
                             [disabled]="loadingFlag">
             <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px">
-              <span>{{ (loadingFlag ? 'SAVING' : (submitButton ? submitButton : 'SAVE'))  }}</span>
+              <span>{{ (loadingFlag ? 'SAVING' : (submitButton ? submitButton : 'SALVAR'))  }}</span>
               <div *ngIf="loadingFlag">
                 <mat-spinner [diameter]="16"></mat-spinner>
               </div>

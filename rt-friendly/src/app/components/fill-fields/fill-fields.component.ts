@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, AfterViewInit, OnDestroy,
+import { Component, OnInit, AfterViewInit, OnDestroy,
          SimpleChanges, Input, Output, EventEmitter, ContentChildren, TemplateRef } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { ExtraType } from 'src/app/models/extra-types.model';
@@ -13,6 +13,7 @@ interface FillField {
   notRequired?: boolean;
   min?: number;
   max?: number;
+  range?: boolean;
   pattern?: any;
   options?: { value: any, name: string }[];
 }
@@ -22,7 +23,7 @@ interface FillField {
   templateUrl: './fill-fields.component.html',
   styleUrls: ['./fill-fields.component.scss']
 })
-export class FillFieldsComponent implements OnInit, OnChanges {
+export class FillFieldsComponent implements OnInit {
   // Form to be filled
   form = new FormGroup({
     standard: new FormGroup({}),
@@ -40,9 +41,6 @@ export class FillFieldsComponent implements OnInit, OnChanges {
 
   // Fields to be filled
   @Input() fields: FillField[] = [];
-
-  // Flag that indicates if the card with the fields are visible
-  @Input() visible: any = false;
 
   // Flag that indicates if confirm/cancel buttons should be used
   @Input() showButtons: any = true;
@@ -98,36 +96,17 @@ export class FillFieldsComponent implements OnInit, OnChanges {
     // Setting fields
     if (this.fields) {
       this.fields.forEach( (field) => {
-        // Standard fields
-        if (!field.extra) {
-          (this.form.get('standard') as FormGroup).addControl(field.key, new FormControl((field.value)) );
-          if (!field.notRequired) {
-            this.form.controls['standard'].get(field.key).setValidators(Validators.required);
-          }
-        // Extra fields
-        } else {
-          this.extraFields = true;
-          (this.form.get('extra') as FormGroup).addControl(field.key, new FormControl((field.value)) );
-          if (!field.notRequired) {
-            this.form.controls['extra'].get(field.key).setValidators(Validators.required);
-          }
+        (this.form.get('standard') as FormGroup).addControl(field.key, new FormControl((field.value)) );
+        if (!field.notRequired) {
+          this.form.controls['standard'].get(field.key).setValidators(Validators.required);
         }
       });
-
-      if (!this.extraFields) {
-        this.form.removeControl('extra');
-        this.extraFields = false;
-      }
     }
+
+    console.log(this.form);
 
     if (this.formGroupContent) {
       this.form.addControl('content', this.formGroupContent);
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.fields || changes.formGroupContent) {
-      this.ngOnInit();
     }
   }
 
@@ -136,10 +115,6 @@ export class FillFieldsComponent implements OnInit, OnChanges {
 
     if (this.form.valid && this.fields) {
       const body = this.form.value.standard;
-
-      if (this.extraFields) {
-        body.extra = this.form.value.extra;
-      }
 
       this.formResponse.emit( {
         body: this.copyObject(body),
@@ -168,12 +143,6 @@ export class FillFieldsComponent implements OnInit, OnChanges {
     this.form.reset();
 
     this.switchViewing();
-  }
-
-  fieldChangeEmitter(field: any) {
-    if (field && field.checkChanges) {
-      this.inputChange.emit(this.form.value);
-    }
   }
 
   getType(element: any) {

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import { ExtraType } from 'src/app/models/extra-types.model';
+import { RequestsService } from 'src/app/services/requests.service';
 
 @Component({
   selector: 'app-request',
@@ -7,28 +9,62 @@ import { ExtraType } from 'src/app/models/extra-types.model';
   styleUrls: ['./request.component.scss']
 })
 export class RequestComponent implements OnInit {
+  title: string = 'Formulário de Falta Abonada';
+
   fields: any = [
-    { name: 'Nome do colaborador',  key: 'a', type: ExtraType.ShortText },
-    { name: 'Matrícula',  key: 'b', type: ExtraType.ShortText },
-    { name: 'Função',  key: 'c', type: ExtraType.ShortText },
-    { name: 'Regime Jurídico',  key: 'd', type: ExtraType.ShortText },
-    { name: 'Unidade/Orgão',  key: 'e', type: ExtraType.ShortText },
-    { name: 'Ramal',  key: 'f', type: ExtraType.ShortText },
-    { name: 'Motivo', key: '2', options: ['Doença sem atestado', 'Doença com atestado', 'Outros'], type: ExtraType.Choice },
-    { name: 'Período de ausência', key: 'g', type: ExtraType.Date },
-    { name: 'Ausência', key: '3', options: ['Com vencimentos', 'Sem vencimentos'], type: ExtraType.Choice }, 
-    { name: 'Inps a partir de',  key: 'i', type: ExtraType.Date },
-    { name: 'Total de dias',  key: 'h', type: ExtraType.Date },
-    { name: 'Último dia de trabalho',  key: 'j', type: ExtraType.Date },
-    { name: 'Observações',  key: 'k', type: ExtraType.LongText },
-    { name: 'Data',  key: 'l', type: ExtraType.Date },
-    { name: 'Parecer clínico (em caso de doença)' , key: 'm', type: ExtraType.ShortText },
-    { name: 'Aprovação', key: 'n', type: ExtraType.ShortText },
+    { value: '',  show: true,  name: 'Nome do colaborador',  key: 'a', type: ExtraType.ShortText },
+    { value: '',  show: true,  name: 'Matrícula',  key: 'b', type: ExtraType.ShortText },
+    { value: '',  show: true,  name: 'Função',  key: 'c', type: ExtraType.ShortText },
+    { value: '',  show: true,  name: 'Regime Jurídico',  key: 'd', type: ExtraType.ShortText },
+    { value: '',  show: true,  name: 'Unidade/Orgão',  key: 'e', type: ExtraType.ShortText },
+    { value: '',  show: true,  name: 'Ramal',  key: 'f', type: ExtraType.ShortText },
+    { value: '',  show: true,  name: 'Motivo', key: 's', options: ['Doença sem atestado', 'Doença com atestado', 'Outros'], type: ExtraType.Choice },
+    { value: '',  show: true,  name: 'Período de ausência', key: 'g', type: ExtraType.Date, range: true },
+    { value: '',  show: true,  name: 'Ausência', key: 'x', options: ['Com vencimentos', 'Sem vencimentos'], type: ExtraType.Choice },
+    { value: '',  show: true,  name: 'Inps a partir de',  key: 'i', type: ExtraType.Date },
+    { value: '',  show: true,  name: 'Total de dias',  key: 'h', type: ExtraType.Number },
+    { value: '',  show: true,  name: 'Último dia de trabalho',  key: 'j', type: ExtraType.Date },
+    { value: '',  show: true,  name: 'Observações',  key: 'k', type: ExtraType.LongText },
+    { value: '',  show: true,  name: 'Data',  key: 'l', type: ExtraType.Date },
+    { notRequired: true, value: '',  show: true,  name: 'Parecer clínico (em caso de doença)' , key: 'm', type: ExtraType.ShortText },
+    { value: '',  show: true,  name: 'Aprovação', key: 'n', type: ExtraType.ShortText }
   ];
 
-  constructor() { }
+  // TODO add barra de busca
+  // Só os próprios tickets
+    // Ticket Criado
+    // Ticket Tomado
+    // Ticket Trocou de fila
+  filas: any = [
+    {
+      name: 'RH',
+      itens: [
+        { id: '35', name: 'Ticket de teste', status: 'New' },
+        { id: '36', name: 'Ticket de teste 2', status: 'On going' }
+      ]
+    },
+    {
+      name: 'Congregação',
+      itens: []
+    }
+  ];
+
+  // PDF e JPG
+
+  constructor(
+    public requestService: RequestsService,
+    public snack: MatSnackBar,
+  ) { }
 
   ngOnInit(): void {
+    this.requestService.getAll().subscribe( (response: any) => {
+      console.log(response);
+    });
   }
 
+  sendForms(response) {
+     setTimeout(() => {
+        this.snack.open('Ticket criado com sucesso', 'OK');
+     }, 2000);
+  }
 }

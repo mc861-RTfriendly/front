@@ -1,1 +1,38 @@
-<app-fill-fields [visible]="true" [fields]="fields" [numberOfColumns]="2"></app-fill-fields>
+<mat-tab-group class="full-width">
+  <mat-tab fxFlex="50" label="Criação de chamado">
+    <app-fill-fields class="fields-margin" [title]="title" [fields]="fields" [numberOfColumns]="2" (formResponse)="sendForms($event)">
+    </app-fill-fields>
+  </mat-tab>
+  <mat-tab fxFlex label="Acompanhar chamados abertos">
+    <mat-card *ngFor="let fila of filas" class="card" fxLayout="column" fxLayoutGap="10px">
+      <mat-card-title fxLayout="row" fxLayoutAlign="start center" class="title">
+        <p>{{ fila.name }}</p>
+      </mat-card-title>
+      <div  fxLayout="row" fxLayoutGap="20px">
+      <ng-container *ngIf="fila.itens.length; else elseBlock"  fxLayout="row">
+        <ng-container *ngFor="let item of fila.itens">
+          <mat-card fxLayoutGap="10px" class="card-size">
+            <mat-card-title fxLayout="row" fxLayoutAlign="center center" class="subtitle">
+              <p>{{ 'ID: '+ item.id }}</p>
+            </mat-card-title>
+
+            <mat-card-content>
+              <div>{{ 'Status: ' + item.status }}</div>
+              <div>{{ 'Nome: ' + item.name }}</div>
+            </mat-card-content>
+          </mat-card>
+        </ng-container>
+      </ng-container>
+      </div>
+
+      <ng-template #elseBlock>
+        <mat-card class="full-width card card-size">
+          <div fxLayoutAlign="center center" class="none-text">
+            <div> {{ 'Nenhum ticket aberto pertencente a esta fila' }} </div>
+          </div>
+        </mat-card>
+      </ng-template>
+
+    </mat-card>
+  </mat-tab>
+</mat-tab-group>
