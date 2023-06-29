@@ -8,6 +8,10 @@
   width: 100% !important;
 }
 
+.full-height {
+  height : 100% !important;
+}
+
 .none-text {
   width: 100%;
   height: 100%;
@@ -20,64 +24,36 @@
   font-weight: 500;
 }
 
-.card-size {
-  height: 150px;
-  width: 200px;
-
+.subtitle {
+  font-size: 22px;
 }
 
-.card {
-  box-shadow: 1px 0.5px 0.5px 1px black !important;
-  padding: 8px;
-  padding-top: 4px;
-  padding-bottom: 12px;
-  font-family: Roboto;
+.description {
+  font-size: 16px;
+  line-break: auto;
+}
 
-  font-style: normal;
-  font-size: 15px;
+.card-size {
+  min-width: 300px;
+}
 
-  .bold {
-    font-weight: 500;
-  }
+.clickable {
+  cursor: pointer;
+}
 
-  .s1 {
-    font-size: 16px;
-  }
+.link-style {
+  color: #007bff;
+  text-decoration: underline;
+}
 
-  .s2 {
-    font-size: 12px;
-  }
+.custom-border {
+  border-color: #cacaca;
+  border-style: solid;
+  border-width: 0.5px;
+}
 
-  .s3 {
-    font-size: 11px;
-  }
-
-  .s4 {
-    font-size: 14px;
-  }
-
-  .no-input {
-    color: red;
-  }
-
-  .align {
-    text-align: center;
-  }
-
-  .slim {
-    font-weight: normal;
-  }
-
-  .padding {
-    padding: 10px 0;
-  }
-
-  .margin {
-    margin-top: 10px;
-  }
-
-  .box-margin {
-    padding: 4px 5px;
-  }
+.simple-margin {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 

@@ -1,38 +1,87 @@
-<mat-tab-group class="full-width">
+<div class="full-width full-height" flexLayout="column" *ngIf="!email" fxLayoutAlign="center center">
+   <app-fill-fields class="full-width fields-margin" [title]="emailTitle" [fields]="emailField" [numberOfColumns]="1"
+     [cleanButton]="true"
+     [submitButton]="'Entrar'"
+     (formResponse)="setEmail($event)">
+   </app-fill-fields>
+</div>
+
+<mat-tab-group *ngIf="email" class="full-width">
   <mat-tab fxFlex="50" label="Criação de chamado">
     <app-fill-fields class="fields-margin" [title]="title" [fields]="fields" [numberOfColumns]="2" (formResponse)="sendForms($event)">
     </app-fill-fields>
   </mat-tab>
   <mat-tab fxFlex label="Acompanhar chamados abertos">
-    <mat-card *ngFor="let fila of filas" class="card" fxLayout="column" fxLayoutGap="10px">
-      <mat-card-title fxLayout="row" fxLayoutAlign="start center" class="title">
-        <p>{{ fila.name }}</p>
-      </mat-card-title>
-      <div  fxLayout="row" fxLayoutGap="20px">
-      <ng-container *ngIf="fila.itens.length; else elseBlock"  fxLayout="row">
-        <ng-container *ngFor="let item of fila.itens">
-          <mat-card fxLayoutGap="10px" class="card-size">
-            <mat-card-title fxLayout="row" fxLayoutAlign="center center" class="subtitle">
-              <p>{{ 'ID: '+ item.id }}</p>
-            </mat-card-title>
+    <mat-accordion>
+      <mat-expansion-panel class="custom-border">
+        <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'100px'">
+          <mat-panel-title class="subtitle">
+            Configurações
+          </mat-panel-title>
+          <mat-panel-description class="description">
+            Filtros aplicados nos chamados
+          </mat-panel-description>
+        </mat-expansion-panel-header>
 
-            <mat-card-content>
-              <div>{{ 'Status: ' + item.status }}</div>
-              <div>{{ 'Nome: ' + item.name }}</div>
-            </mat-card-content>
-          </mat-card>
-        </ng-container>
-      </ng-container>
-      </div>
-
-      <ng-template #elseBlock>
-        <mat-card class="full-width card card-size">
-          <div fxLayoutAlign="center center" class="none-text">
-            <div> {{ 'Nenhum ticket aberto pertencente a esta fila' }} </div>
+        <div fxLayout="column">
+          <div *ngFor="let filter of filters">
+            <mat-checkbox [(ngModel)]="filter.active" (change)="filterItens(filter)">
+              {{ filter.label }}
+            </mat-checkbox>
           </div>
-        </mat-card>
-      </ng-template>
+        </div>
+      </mat-expansion-panel>
 
-    </mat-card>
+      <mat-expansion-panel class="custom-border" [disabled]="!itens">
+        <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'100px'">
+          <mat-panel-title class="subtitle">
+            Mostrar chamados
+          </mat-panel-title>
+
+          <mat-panel-description *ngIf="!itens" class="description">
+            <span> Carregando, por favor aguarde </span>
+            <mat-icon>public</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-divider class="simple-margin"></mat-divider>
+
+        <div fxLayout="row" fxLayoutGap="20px">
+          <ng-container *ngIf="itens && itens.length">
+            <mat-grid-list class="full-width" [cols]="columnMagicNumber ? columnMagicNumber : 4" rowHeight="290" gutterSize="20">
+              <mat-grid-tile *ngFor="let item of itens" [colspan]="1">
+                <mat-card *ngIf="item.show" fxLayoutGap="10px" class="card-size clickable custom-border">
+                  <mat-card-title fxLayout="row" fxLayoutAlign="center center" class="subtitle">
+                    <p>{{ 'ID: '+ item.id }}</p>
+                  </mat-card-title>
+
+                  <mat-card-content>
+                    <ng-container *ngFor="let elem of keys">
+                      <ng-container *ngIf="elem.key === 'attachments'; else elseBlock">
+                        <span class="description"> {{ elem.name + ': ' }} </span>
+                        <ng-container *ngIf="item[elem.key]">
+                          <span *ngFor="let attachment of item[elem.key]; let last = last" (click)="openFile(attachment)"
+                            class="description link-style clickable">
+                           {{ attachment.filename + (last ? '' : ', ' ) }}
+                          </span>
+                        </ng-container>
+                        <span *ngIf="!item[elem.key]" class="description"> {{ '-' }} </span>
+                      </ng-container>
+
+                      <ng-template #elseBlock >
+                        <div class="description"> {{ elem.name + ': ' + (item[elem.key] ? item[elem.key] : '-') }} </div>
+                      </ng-template>
+                    </ng-container>
+                  </mat-card-content>
+
+                </mat-card>
+              </mat-grid-tile>
+            </mat-grid-list>
+          </ng-container>
+        </div>
+      </mat-expansion-panel>
+
+    </mat-accordion>
+
   </mat-tab>
 </mat-tab-group>

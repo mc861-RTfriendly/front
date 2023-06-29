@@ -92,7 +92,6 @@ export class FillFieldsComponent implements OnInit {
       extra: new FormGroup({})
     });
 
-    console.log(this.fields)
     // Setting fields
     if (this.fields) {
       this.fields.forEach( (field) => {
@@ -102,8 +101,6 @@ export class FillFieldsComponent implements OnInit {
         }
       });
     }
-
-    console.log(this.form);
 
     if (this.formGroupContent) {
       this.form.addControl('content', this.formGroupContent);

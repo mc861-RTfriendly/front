@@ -13,12 +13,6 @@ export class ApiInterceptor implements HttpInterceptor {
       url: environment.api.url + req.url,
     });
 
-    if (req.body instanceof FormData) {
-      apiReq.clone({
-        setHeaders: { 'Content-type': 'application/json' }
-      });
-    }
-
     return next.handle(apiReq);
   }
 }
