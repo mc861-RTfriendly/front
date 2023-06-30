@@ -16,6 +16,7 @@ export class RequestComponent implements OnInit {
 
   email: string = null;//'user1@example.com';
   settingEmail: boolean = true;
+  cc: string[] = [];
 
   emailTitle = 'Por favor, insira seu email e faça login';
   emailField: any = [
@@ -38,7 +39,8 @@ export class RequestComponent implements OnInit {
     { value: '',  show: true,  name: 'Observações',  key: 'obs', type: ExtraType.LongText },
     { value: '',  show: true,  name: 'Data',  key: 'data', type: ExtraType.Date },
     { notRequired: true, value: '',  show: true,  name: 'Parecer clínico (em caso de doença)' , key: 'parecer', type: ExtraType.ShortText },
-    { value: '',  show: true,  name: 'Aprovação', key: 'aprovacao', type: ExtraType.ShortText }
+    { value: '',  show: true,  name: 'Aprovação', key: 'aprovacao', type: ExtraType.ShortText },
+    { value: '',  show: true,  name: 'Cc (separado por , (vírgula))', key: 'cc_join', type: ExtraType.ShortText }
   ];
 
   itens: any[] = null;
@@ -155,7 +157,7 @@ export class RequestComponent implements OnInit {
     const body: any = {
       requestor: this.email,
       fields: this.formatBody(response.body),
-      cc: [],
+      cc: this.cc,
     };
     this.requestService.createTicket(body).subscribe( (response) => {
       this.snack.open('Ticket criado com sucesso', 'OK');
@@ -166,7 +168,9 @@ export class RequestComponent implements OnInit {
     fields.dias = String(fields.dias);
     fields.per_ausencia_ini = fields.per_ausencia[0]
     fields.per_ausencia_fim = fields.per_ausencia[1]
+    this.cc = fields.cc_join.split(',');
     delete fields.per_ausencia;
+    delete fields.cc_join;
     return fields;
   }
 }
