@@ -40,7 +40,7 @@ export class RequestComponent implements OnInit {
     { value: '',  show: true,  name: 'Data',  key: 'data', type: ExtraType.Date },
     { notRequired: true, value: '',  show: true,  name: 'Parecer clínico (em caso de doença)' , key: 'parecer', type: ExtraType.ShortText },
     { value: '',  show: true,  name: 'Aprovação', key: 'aprovacao', type: ExtraType.ShortText },
-    { value: '',  show: true,  name: 'Cc (separado por , (vírgula))', key: 'cc_join', type: ExtraType.ShortText }
+    { value: '',  show: true,  name: 'Cc (separado por , (vírgula))', key: 'cc_join', type: ExtraType.ShortText,  notRequired: true }
   ];
 
   itens: any[] = null;
@@ -161,6 +161,7 @@ export class RequestComponent implements OnInit {
     };
     this.requestService.createTicket(body).subscribe( (response) => {
       this.snack.open('Ticket criado com sucesso', 'OK');
+      this.setItens();
     });
   }
 
@@ -168,7 +169,7 @@ export class RequestComponent implements OnInit {
     fields.dias = String(fields.dias);
     fields.per_ausencia_ini = fields.per_ausencia[0]
     fields.per_ausencia_fim = fields.per_ausencia[1]
-    this.cc = fields.cc_join.split(',');
+    this.cc = fields.cc_join != '' ? fields.cc_join.split(',') : [];
     delete fields.per_ausencia;
     delete fields.cc_join;
     return fields;
