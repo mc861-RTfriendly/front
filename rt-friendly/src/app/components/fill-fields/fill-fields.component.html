@@ -83,19 +83,6 @@
 
       <ng-container *ngIf="showButtons">
         <div class="action-buttons" fxLayout="row" fxLayoutAlign="space-between">
-          <ng-container *ngIf="cleanButton; else cancelButton">
-            <button class="button-size red-color" mat-stroked-button (click)="form.reset()" type="button">
-               {{ 'Limpar campo'  }}
-            </button>
-          </ng-container>
-
-          <ng-template #cancelButton>
-            <div class="button-size">
-              <button *ngIf="!loadingFlag" class="button-size red-color" mat-stroked-button (click)="switchViewing()" type="button">
-                {{ 'CANCELAR'  }}
-             </button>
-            </div>
-          </ng-template>
 
         <button *ngIf="!loadingButton; else loadingSubmitButton" [ngClass]="{
                      'button-size': true,
