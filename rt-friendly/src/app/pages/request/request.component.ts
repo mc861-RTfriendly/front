@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
 import { HostListener } from '@angular/core'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ExtraType } from 'src/app/models/extra-types.model';
@@ -11,6 +12,7 @@ import { ModalService } from 'src/app/services/modal.service';
   styleUrls: ['./request.component.scss']
 })
 export class RequestComponent implements OnInit {
+  form: FormGroup;
   columnMagicNumber: number = null;
 
   title: string = 'Formulário de Falta Abonada';
@@ -91,7 +93,11 @@ export class RequestComponent implements OnInit {
     public snack: MatSnackBar,
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    this.form = new FormGroup({
+      image: new FormControl('', [])
+    });
+  }
 
   setItens() {
     this.requestService.getAll(this.email).subscribe( (response: any) => {
