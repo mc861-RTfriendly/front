@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HostListener } from '@angular/core'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ExtraType } from 'src/app/models/extra-types.model';
 import { RequestsService } from 'src/app/services/requests.service';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
   selector: 'app-request',
@@ -13,6 +14,10 @@ export class RequestComponent implements OnInit {
   columnMagicNumber: number = null;
 
   title: string = 'Formulário de Falta Abonada';
+
+  selectedTicket = null;
+
+  @ViewChild('individualTicketModal', { static: true }) individualTicketModal: any;
 
   email: string = null;//'user1@example.com';
   settingEmail: boolean = true;
@@ -64,6 +69,17 @@ export class RequestComponent implements OnInit {
     { key: 'cc',  label: 'Mostrar chamados em que eu faço parte da CC', active: true },
   ];
 
+  imageMap: any = {
+    'Falta Abonada': {
+      ['Formulário Enviado']: 'assets/diagram_1.svg',
+      ['Formulário Recebido pelo RH']: 'assets/diagram_2.svg',
+      ['Avaliação da Chefia']: 'assets/diagram_3.svg',
+      ['Falta Abonada Negada']: 'assets/diagram_4.svg',
+      ['RH Insere Falta Abonada no Sistema Vetorh']: 'assets/diagram_5.svg',
+      ['Falta Abonada Aprovada']: 'assets/diagram_7.svg',
+    }
+  };
+
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.setNumberOfColums();
@@ -71,6 +87,7 @@ export class RequestComponent implements OnInit {
 
   constructor(
     public requestService: RequestsService,
+    public modalService: ModalService,
     public snack: MatSnackBar,
   ) { }
 
@@ -159,6 +176,7 @@ export class RequestComponent implements OnInit {
       fields: this.formatBody(response.body),
       cc: this.cc,
     };
+
     this.requestService.createTicket(body).subscribe( (response) => {
       this.snack.open('Ticket criado com sucesso', 'OK');
       this.setItens();
@@ -169,9 +187,14 @@ export class RequestComponent implements OnInit {
     fields.dias = String(fields.dias);
     fields.per_ausencia_ini = fields.per_ausencia[0]
     fields.per_ausencia_fim = fields.per_ausencia[1]
-    this.cc = fields.cc_join != '' ? fields.cc_join.split(',') : [];
+    this.cc = fields.cc_join ? fields.cc_join.split(',') : [];
     delete fields.per_ausencia;
     delete fields.cc_join;
     return fields;
+  }
+
+  openModal(ticket) {
+    this.selectedTicket = ticket;
+    this.modalService.openModal(this.individualTicketModal).subscribe(() => {});
   }
 }

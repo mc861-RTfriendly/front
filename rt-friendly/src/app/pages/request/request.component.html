@@ -31,7 +31,8 @@
           </div>
         </div>
       </mat-expansion-panel>
-
+    </mat-accordion>
+    <mat-accordion>
       <mat-expansion-panel class="custom-border" [disabled]="!itens">
         <mat-expansion-panel-header [collapsedHeight]="'100px'" [expandedHeight]="'100px'">
           <mat-panel-title class="subtitle">
@@ -50,7 +51,8 @@
           <ng-container *ngIf="itens && itens.length">
             <mat-grid-list class="full-width" [cols]="columnMagicNumber ? columnMagicNumber : 4" rowHeight="290" gutterSize="20">
               <mat-grid-tile *ngFor="let item of itens" [colspan]="1">
-                <mat-card *ngIf="item.show" fxLayoutGap="10px" class="card-size clickable custom-border">
+                <mat-card *ngIf="item.show" (click)="item.flow ? openModal(item) : null" fxLayoutGap="10px"
+                  [ngClass]="{ 'clickable': item.flow }" class="card-size custom-border">
                   <mat-card-title fxLayout="row" fxLayoutAlign="center center" class="subtitle">
                     <p>{{ 'ID: '+ item.id }}</p>
                   </mat-card-title>
@@ -85,3 +87,19 @@
 
   </mat-tab>
 </mat-tab-group>
+
+<ng-template #individualTicketModal>
+  <div fxLayout="column" fxLayoutAlign="space-between" fxLayoutGap="20px" class="modal-height">
+    <div fxLayout="row" fxLayoutAlign="space-between center" class="title-wrapper">
+      <div> {{ 'Fluxograma atual do ticket' }} </div>
+
+      <button mat-icon-button mat-dialog-close>
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div class="full-width">
+       <img [src]="imageMap[selectedTicket.flow][selectedTicket.flow_status]">
+    </div>
+  </div>
+</ng-template>
